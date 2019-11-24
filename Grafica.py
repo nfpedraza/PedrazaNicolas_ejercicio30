@@ -4,95 +4,31 @@ import matplotlib.pyplot as plt
 
 data = np.loadtxt("Clase_30.dat")
 
-plt.figure(1, figsize=(10,5)) 
+plt.figure(figsize=(15,4))
+
+dt = data[:,0]
+dt= np.delete(dt,-1)
+
+dx = data[-1,:]
+dx = np.delete(dx,0)
+
+diff = np.delete(data,0,1)
+diff = np.delete(diff,-1,0)
 
 plt.subplot(1,3,1)
-plt.imshow(data.T)
-plt.xlabel('Posicion')
-plt.ylabel('Tiempo')
+plt.imshow(diff,extent=[-1,1,1,0],aspect=2.0)
+plt.colorbar()
+plt.xlabel('X (m)')
+plt.ylabel('Time (s)')
+plt.title("$\Psi$ ($m^2/s$)")
 
 plt.subplot(1,3,2)
-plt.plot(data[:,0], data[:,-1])
-plt.plot(data[:,0], data[:,-5])
-plt.plot(data[:,0], data[:,-10])
+plt.plot(diff)
+
+
 plt.xlabel('PSI')
 plt.ylabel('Posicion')
 
 
-plt.subplot(1,3,3)
-plt.plot(data[:,0],data[:,20])
 
-plt.xlabel('PSI(x=0)')
-plt.ylabel('Tiempo')
-
-plt.savefig("graph1.png")
-
-plt.figure(2, figsize=(10,5)) 
-
-plt.subplot(1,3,1)
-plt.imshow(data.T)
-plt.xlabel('Posicion')
-plt.ylabel('Tiempo')
-
-plt.subplot(1,3,2)
-plt.plot(data[:,0], data[:,-1])
-plt.plot(data[:,0], data[:,-5])
-plt.plot(data[:,0], data[:,-10])
-plt.xlabel('PSI')
-plt.ylabel('Posicion')
-
-
-plt.subplot(1,3,3)
-plt.plot(data[:,0],data[:,20])
-
-plt.xlabel('PSI(x=0)')
-plt.ylabel('Tiempo')
-
-plt.savefig('graph2.png')
-
-plt.figure(3, figsize=(10,5)) 
-
-plt.subplot(1,3,1)
-plt.imshow(data.T)
-plt.xlabel('Posicion')
-plt.ylabel('Tiempo')
-
-plt.subplot(1,3,2)
-plt.plot(data[:,0], data[:,-1])
-plt.plot(data[:,0], data[:,-5])
-plt.plot(data[:,0], data[:,-10])
-plt.xlabel('PSI')
-plt.ylabel('Posicion')
-
-
-plt.subplot(1,3,3)
-plt.plot(data[:,0],data[:,20])
-
-plt.xlabel('PSI(x=0)')
-plt.ylabel('Tiempo')
-
-plt.savefig('graph3.png')
-
-
-plt.figure(1, figsize=(10,5)) 
-
-plt.subplot(1,3,1)
-plt.imshow(data.T)
-plt.xlabel('Posicion')
-plt.ylabel('Tiempo')
-
-plt.subplot(1,3,2)
-plt.plot(data[:,0], data[:,-1])
-plt.plot(data[:,0], data[:,-5])
-plt.plot(data[:,0], data[:,-10])
-plt.xlabel('PSI')
-plt.ylabel('Posicion')
-
-
-plt.subplot(1,3,3)
-plt.plot(data[:,0],data[:,20])
-
-plt.xlabel('PSI(x=0)')
-plt.ylabel('Tiempo')
-
-plt.savefig('graph4.png')
+plt.savefig("difusion.png")
