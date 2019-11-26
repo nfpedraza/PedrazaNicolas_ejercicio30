@@ -13,6 +13,8 @@ const double D= 1.0;
 const double T=1.0;
 const double S=1.0;
 double dif(int tn,int xn);
+double difN(double **C, int tn, int xn);
+int convergencia (double **C, double **CN int xn, int tn);
 
 double dif(int tn, int xn){
     
@@ -111,7 +113,7 @@ double difN(double **C, int tn, int xn){
 	   
 int main (){
 	
-    dif(tn,xn);
+    convergencia(C, CN,xn,tn);
     return 0;
 }
 
