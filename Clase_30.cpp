@@ -7,21 +7,20 @@
 using namespace std;
 const double xmin= -1.0;
 const double xmax=1.0;
-const int xn=30;
-const int tn=450;
+const int xn=100;
 const double D= 1.0;
 const double T=1.0;
 const double S=1.0;
-double dif(int tn,int xn);
-double difN(double **C, int tn, int xn);
-int convergencia (double **C, double **CN int xn, int tn);
+double **dif(int xn);
+double **difN(double **C,int xn);
+void convergencia (double **C, double **CN, int xn);
 
-double dif(int tn, int xn){
+double **dif(int xn){
     
     int i,j;
     double time =0.0;
     double dx =(xmax-xmin)/xn;
-    double dt= pow(dx,2)/(2*D);
+    int tn= (2*D)/pow(dx,2);
     double x = -1.0;
 	
     double **C = new double *[tn];
@@ -33,7 +32,7 @@ double dif(int tn, int xn){
     for(i = 0; i <tn; i++){
         for(j=1; j<xn; j++){
             
-            C[i+1][j] = (0.5)*((C[i][j+1] - 2*C[i][j] + C[i][j-1])+(dt*S)); //aqui se define la ecuacion de difusion del libro
+            C[i+1][j] = (0.5)*((C[i][j+1] - 2*C[i][j] + C[i][j-1])+(S/tn)); //aqui se define la ecuacion de difusion del libro
             
 		C[0][j+1]=0.0;                             //boundary condition i)      
    
@@ -43,12 +42,12 @@ double dif(int tn, int xn){
 	return C;
 }
  
-double difN(double **C, int tn, int xn){
+double **difN(double **C, int xn){
     
     int i,j;
     double time =0.0;
     double dx =(xmax-xmin)/xn;
-    double dt= pow(dx,2)/(2*D);
+    int tn= (2*D)/pow(dx,2);
     double x = -1.0;
 	
     double **CN = new double *[tn];
@@ -59,23 +58,24 @@ double difN(double **C, int tn, int xn){
     
     for(i = 0; i <tn; i++){
         for(j=1; j<xn; j++){
+            CN[i][j] = abs(C[i+1][j] - C[i][j] ); //aqui se define la ecuacion de difusion del libro
             
-            CN[i][j] = abs(C[i][j] - C[i-1][j] ); //aqui se define la ecuacion de difusion del libro
-            
-		C[0][j+1]=0.0;                             //boundary condition i)      
+		CN[0][j+1]=0.0;                             //boundary condition i)      
    
-        C[xn-1][j+1]=0.0;                        //boundary condition ii) 
+        CN[xn-1][j+1]=0.0;                        //boundary condition ii) 
         }
     }
 	return CN;
 }
-   int convergencia (double **C, double **CN int xn, int tn){
+   void convergencia (double **C, double **CN, int xn){
 	   
+	   ofstream fout("Clase_30.dat");
 	   int i,j =1;
+       int paso=1;
 	   double Cm= C[1][0];
-	   double CNm=CN[1][0];
+	   double CNm= CN[1][0];
 	   
-	   for (j=0;j<xn;j++){
+	   for (j=1;j<xn;j++){
 		   if (C[1][j]>Cm){
 			   Cm=C[1][j];
 		   }
@@ -89,9 +89,9 @@ double difN(double **C, int tn, int xn){
 			   CNm=CN[1][0];
 		   }
 	   }
-	   while((CNm/Cm)>pow(10,-5){
-		   int paso++;
-		   for (j=0;j<xn;j++){
+	   while((CNm/Cm)>pow(10,-5)){
+		   paso++;
+		   for (j=1;j<xn;j++){
 		   if (C[paso][j]>Cm){
 			   Cm=C[paso][j];
 		   }
@@ -106,16 +106,14 @@ double difN(double **C, int tn, int xn){
 		   }
 	   }
 	   }
-		 return paso;
+		  fout<<xn<<"\t"<<paso<<"\n";
+	   fout.close();
 		 }
-		   
-	   
-	   
+
 int main (){
 	
-    convergencia(C, CN,xn,tn);
+	convergencia(dif(xn),difN(dif(xn),xn),xn);
+	
+	
     return 0;
 }
-
-			   
-	                                   

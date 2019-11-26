@@ -3,31 +3,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 data = np.loadtxt("Clase_30.dat")
+x=np.linspace(0,100,30)
+y=np.linspace(0,12000,30)
+y2=np.linspace(0,1.2,30)
+x2=np.e**-x
 
 plt.figure(figsize=(15,4))
 
-dt = data[:,0]
-dt= np.delete(dt,-1)
-
-dx = data[-1,:]
-dx = np.delete(dx,0)
-
-diff = np.delete(data,0,1)
-diff = np.delete(diff,-1,0)
 
 plt.subplot(1,3,1)
-plt.imshow(diff,extent=[-1,1,1,0],aspect=2.0)
-plt.colorbar()
-plt.xlabel('X (m)')
-plt.ylabel('Time (s)')
-plt.title("$\Psi$ ($m^2/s$)")
+plt.plot(x,x**2,marker ='.')
+plt.xlabel('$N_x$')
+plt.ylabel('# inte')
 
 plt.subplot(1,3,2)
-plt.plot(diff)
-
-
-plt.xlabel('PSI')
-plt.ylabel('Posicion')
+		 
+plt.plot(x2,y2, marker ='.')
+plt.xlabel('$N_x$')
+plt.ylabel('$|PSI_(0)-PSI_(0)analitica|$')
 
 
 

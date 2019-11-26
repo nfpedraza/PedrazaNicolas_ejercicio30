@@ -1,11 +1,3 @@
-graph4.png : Clase_30.dat Grafica.py
-	python Grafica.py
-
-graph3.png : Clase_30.dat Grafica.py
-	python Grafica.py
-
-graph2.png : Clase_30.dat Grafica.py
-	python Grafica.py
 
 graph1.png : Clase_30.dat Grafica.py
 	python Grafica.py
