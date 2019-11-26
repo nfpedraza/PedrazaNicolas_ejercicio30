@@ -2,7 +2,7 @@
 #include <cmath>
 #include <fstream>
 
-//Codigo extraido y modificado de : https://www.dreamincode.net/forums/topic/125770-simulating-diffusion-equation/
+//Codigo extraido y modificado de : https://www.dreamincode.net/forums/topic/125770-simulating-diffusion-equation/ y de mi ejercicio asado
 
 using namespace std;
 const double xmin= -1.0;
@@ -13,12 +13,6 @@ const double D= 1.0;
 const double T=1.0;
 const double S=1.0;
 double dif(int tn,int xn);
-
-int main ()
-{
-    dif(tn,xn);
-    return 0;
-}
 
 double dif(int tn, int xn){
     
@@ -46,25 +40,80 @@ double dif(int tn, int xn){
     }
 	return C;
 }
+ 
+double difN(double **C, int tn, int xn){
     
-    ofstream fout("Clase_30.dat");
-    for (i = 0; i<=tn; i++)
+    int i,j;
+    double time =0.0;
+    double dx =(xmax-xmin)/xn;
+    double dt= pow(dx,2)/(2*D);
+    double x = -1.0;
+	
+    double **CN = new double *[tn];
+    for (i=0;i<=tn;i++)
     {
-        fout<<time<<"\t";
-        time+=dt;
-        for (j = 0; j <=xn; j++)
-        {
-            fout<<C[i][j]<<"\t";
-        }
-        fout<<"\n";
+        CN[i] =new double[xn];
     }
     
-    fout<<0<<"\t"; 
-    for(j=0; j<=xn;j++){
-        
-        fout<<x<<"\t";
-        x+= dx;
+    for(i = 0; i <tn; i++){
+        for(j=1; j<xn; j++){
+            
+            CN[i][j] = abs(C[i][j] - C[i-1][j] ); //aqui se define la ecuacion de difusion del libro
+            
+		C[0][j+1]=0.0;                             //boundary condition i)      
+   
+        C[xn-1][j+1]=0.0;                        //boundary condition ii) 
+        }
     }
+	return CN;
+}
+   int convergencia (double **C, double **CN int xn, int tn){
+	   
+	   int i,j =1;
+	   double Cm= C[1][0];
+	   double CNm=CN[1][0];
+	   
+	   for (j=0;j<xn;j++){
+		   if (C[1][j]>Cm){
+			   Cm=C[1][j];
+		   }
+		   else{
+			   Cm=C[1][0];
+		   }
+		   if(CN[1][j]>CNm){
+			   CNm=CN[1][j];
+		   }
+		   else{
+			   CNm=CN[1][0];
+		   }
+	   }
+	   while((CNm/Cm)>pow(10,-5){
+		   int paso++;
+		   for (j=0;j<xn;j++){
+		   if (C[paso][j]>Cm){
+			   Cm=C[paso][j];
+		   }
+		   else{
+			   Cm=C[1][j];
+		   }
+		   if(CN[paso][j]>CNm){
+			   CNm=CN[paso][j];
+		   }
+		   else{
+			   CNm=CN[1][j];
+		   }
+	   }
+	   }
+		 return paso;
+		 }
+		   
+	   
+	   
+int main (){
+	
+    dif(tn,xn);
+    return 0;
+}
 
-    fout.close();
+			   
 	                                   
